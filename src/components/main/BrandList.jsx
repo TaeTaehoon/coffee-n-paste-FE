@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux/es/exports";
 import styled, { css } from "styled-components";
+import { Link } from "react-router-dom";
 import {
   __getMenusbyBrand,
   selectBrand,
@@ -39,7 +40,7 @@ function BrandList(props) {
         );
       })}
       <StButton onClick={props.onClick}>
-        {userToken === null ? "로그인하기" : "글 추가하기"}
+        {userToken === null ? "로그인하기" : <Link to="/post">글추가하기</Link>}
       </StButton>
     </StList>
   );
@@ -96,8 +97,16 @@ const StButton = styled.button`
   font-family: var(--korean-font);
   font-size: 28px;
   padding: 10px;
+  letter-spacing: 0.1rem;
   background: none;
   border: var(--border-style);
+  a {
+    font-family: var(--korean-font);
+    font-size: 28px;
+    padding: 10px;
+    background: none;
+    padding: 0;
+  }
   :hover {
     background-color: var(--green-color);
     color: var(--bg-color);

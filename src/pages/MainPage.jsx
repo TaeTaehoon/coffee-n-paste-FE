@@ -3,8 +3,11 @@ import Header from "../components/main/Header";
 import DetailModalBody from "../components/main/detailModal/Body";
 import NavigationGroup from "../components/main/fixNavigation/NavigationGroup";
 import GuestModal from "../components/registeration/GuestModal";
+import { useLocation } from "react-router-dom";
 
 function MainPage(props) {
+  let location = useLocation();
+  let state = location.state;
   const userToken = window.localStorage.getItem("token");
   const modalRef = useRef();
   const guestModalRef = useRef();
@@ -12,7 +15,6 @@ function MainPage(props) {
     modalRef.current.classList.add("modalOn");
   };
   const handleLoginnSubmitHandler = useCallback(() => {
-    console.log("로그인버튼");
     if (userToken === null) {
       guestModalRef.current.classList.add("modalOn");
     } else {
