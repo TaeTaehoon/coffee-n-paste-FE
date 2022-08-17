@@ -1,8 +1,11 @@
 import React, { useRef, useCallback, useState, useEffect } from "react";
+import { useDispatch } from "react-redux/es/exports";
 import styled, { css } from "styled-components";
 import { AiOutlineCheck } from "react-icons/ai";
+import { __postUserRegistraion } from "../../redux/modules/userSlice";
 
 function RegisterForm({ onLogin }) {
+  const dispatch = useDispatch();
   const [inputs, setInputs] = useState({ name: "", id: "" });
   const [validate, setValidate] = useState({
     name: true,
@@ -52,12 +55,6 @@ function RegisterForm({ onLogin }) {
     } else {
       setValidate({ ...validate, name: true, id: true, pw: true, rePw: true });
     }
-
-    // () => {
-    //   if (validate.id && validate.name && validate.pw && validate.rePw) {
-    //     console.log("correct");
-    //   }
-    // };
   });
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
@@ -72,10 +69,19 @@ function RegisterForm({ onLogin }) {
       validate.rePw &&
       pwRef.current.value !== ""
     ) {
-      console.log("correct");
+      dispatch(
+        __postUserRegistraion({
+          id: inputs.id,
+          nickName: inputs.name,
+          password: pwRef.current.value,
+          passwordConfirm: rePwRef.current.value,
+        })
+      );
+
       setInputs({ id: "", name: "" });
       pwRef.current.value = "";
       rePwRef.current.value = "";
+      onLogin();
     }
   }, [validate]);
   return (

@@ -9,10 +9,9 @@ import {
 } from "../../redux/modules/mainSlice";
 
 function BrandList(props) {
-  const userToken = props.userToken;
   const BRANDS = useSelector((state) => state.mainSlice.brands);
   const dispatch = useDispatch();
-
+  const userToken = useSelector((state) => state.userSlice.userToken);
   const [select, setSelect] = useState(0);
 
   const handleBrandClick = useCallback(
@@ -24,7 +23,7 @@ function BrandList(props) {
     },
     [dispatch]
   );
-
+  console.log(userToken);
   return (
     <StList>
       {BRANDS.map((brand) => {
@@ -63,7 +62,8 @@ const StListItem = styled.li`
   padding: 10px 15px;
   border: 3.5px solid;
   border-color: var(--bg-color);
-
+  min-width: 170px;
+  text-align: center;
   &.active {
     ${() => {
       switch (Math.floor(Math.random() * 3)) {
@@ -110,6 +110,9 @@ const StButton = styled.button`
   :hover {
     background-color: var(--green-color);
     color: var(--bg-color);
+    a {
+      color: var(--bg-color);
+    }
   }
 `;
 export default BrandList;

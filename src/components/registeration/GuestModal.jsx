@@ -19,14 +19,14 @@ function GuestModal({ Ref }) {
     setIsLogin(false);
   };
   const handleOnLogin = (e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
     setIsLogin(true);
   };
   return (
     <ModalBg Ref={Ref} onclick={handleCloseModal}>
       <StContainer>
         {isLogin ? (
-          <LoginForm onRegister={handleOnRegister} />
+          <LoginForm onRegister={handleOnRegister} Ref={Ref} />
         ) : (
           <RegisterForm onLogin={handleOnLogin} />
         )}

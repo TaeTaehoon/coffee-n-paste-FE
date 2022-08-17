@@ -1,20 +1,32 @@
-import React, { useCallback, useRef, useState } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux/es/exports";
+import styled, { css } from "styled-components";
+import { __postUserExistance } from "../../redux/modules/userSlice";
 
-function LoginForm({ onRegister }) {
+function LoginForm({ onRegister, Ref }) {
+  const userToken = useSelector((state) => state.userSlice.userToken);
+  const isErr = useSelector((state) => state.userSlice.err);
+  const dispatch = useDispatch();
   const idRef = useRef();
   const pwRef = useRef();
   const handleSubmitLogin = useCallback((e) => {
     e.preventDefault();
     const id = idRef.current.value;
-    const pw = pwRef.current.value;
+    const password = pwRef.current.value;
+    dispatch(__postUserExistance({ id, password }));
     idRef.current.value = "";
     pwRef.current.value = "";
   });
 
+  useEffect(() => {
+    if (userToken !== "") Ref.current.classList.remove("modalOn");
+  }, [userToken]);
+
   return (
     <StFormContainer onSubmit={handleSubmitLogin}>
+      <StValidateMsg isValid={isErr === null ? true : false}>
+        ID 또는 PASSWORD를 확인해주세요!
+      </StValidateMsg>
       <label htmlFor="idInput">ID</label>
       <StInput type="text" id="idInput" name="id" ref={idRef} />
       <label htmlFor="pwInput">PASSWORD</label>
@@ -26,7 +38,7 @@ function LoginForm({ onRegister }) {
 }
 
 const StFormContainer = styled.form`
-  padding-bottom: 20px;
+  padding-bottom: 30px;
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -74,6 +86,25 @@ const StButton = styled.button`
   font-family: var(--korean-font);
   border: var(--border-style);
   background-color: var(--bg-color);
+`;
+
+const StValidateMsg = styled.span`
+  padding: 5px 0 5px 5px;
+  font-size: 1.2rem;
+  ${(props) => {
+    switch (props.isValid) {
+      case true: {
+        return css`
+          color: var(--bg-color);
+        `;
+      }
+      case false: {
+        return css`
+          color: var(--red-color);
+        `;
+      }
+    }
+  }}
 `;
 
 export default LoginForm;

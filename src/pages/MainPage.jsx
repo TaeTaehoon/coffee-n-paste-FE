@@ -6,9 +6,7 @@ import GuestModal from "../components/registeration/GuestModal";
 import { useLocation } from "react-router-dom";
 
 function MainPage(props) {
-  let location = useLocation();
-  let state = location.state;
-  const userToken = window.localStorage.getItem("token");
+  const userToken = localStorage.getItem("userToken");
   const modalRef = useRef();
   const guestModalRef = useRef();
   const handleModalOpen = () => {
@@ -17,13 +15,12 @@ function MainPage(props) {
   const handleLoginnSubmitHandler = useCallback(() => {
     if (userToken === null) {
       guestModalRef.current.classList.add("modalOn");
-    } else {
     }
   }, [userToken]);
   return (
     <>
-      <Header userToken={userToken} onClick={handleLoginnSubmitHandler} />
-      <NavigationGroup />
+      <Header onClick={handleLoginnSubmitHandler} />
+      <NavigationGroup Ref={guestModalRef} />
       <button onClick={handleModalOpen}>모달을 띄워봐요</button>
       <DetailModalBody Ref={modalRef} />
       <GuestModal Ref={guestModalRef} />
